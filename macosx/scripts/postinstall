@@ -1,0 +1,10 @@
+#!/bin/bash
+USER_HOME=$( /usr/bin/stat -f "%Su" /dev/console )
+HOME_DIR=$( /usr/bin/dscl . -read /Users/$USER_HOME NFSHomeDirectory | awk '{print $2}' )
+
+DEST="$HOME_DIR/Library/Application Support/CrossDesk/certs"
+
+mkdir -p "$DEST"
+cp -R "/Library/Application Support/CrossDesk/certs/"* "$DEST/"
+
+exit 0

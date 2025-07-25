@@ -9,8 +9,8 @@
 !define UNINSTALL_REG_KEY "CrossDesk"
 
 ;★安装包图标
-Icon "E:\SourceCode\crossdesk\icon\app_icon.ico"
-!define MUI_ICON "E:\SourceCode\crossdesk\icon\app_icon.ico"
+Icon "E:\SourceCode\crossdesk\icon\crossedesk.ico"
+!define MUI_ICON "E:\SourceCode\crossdesk\icon\crossedesk.ico"
 
 ;★压缩设置
 SetCompressor /FINAL lzma
@@ -42,7 +42,7 @@ Section "MainSection"
     File /oname=crossdesk.exe "E:\SourceCode\crossdesk\build\windows\x64\release\crossdesk.exe"
 	
 	; ? 复制图标文件到安装目录
-    File "E:\SourceCode\crossdesk\icon\app_icon.ico"
+    File "E:\SourceCode\crossdesk\icon\crossedesk.ico"
 
     ;★写入卸载信息
     WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -52,7 +52,7 @@ Section "MainSection"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayIcon" "$INSTDIR\app_icon.ico"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayIcon" "$INSTDIR\crossedesk.ico"
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "NoModify" 1
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "NoRepair" 1
 SectionEnd
@@ -64,10 +64,10 @@ SectionEnd
 
 Section -AdditionalIcons
     ;★桌面快捷方式
-    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\app_icon.ico"
+    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossedesk.ico"
 
     ;★开始菜单快捷方式
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\app_icon.ico"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossedesk.ico"
 
     ;★网页快捷方式（桌面）
     WriteIniStr "$DESKTOP\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"

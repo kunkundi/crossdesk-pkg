@@ -6,7 +6,7 @@ APP_NAME="CrossDesk"
 EXECUTABLE_PATH="../exec/crossdesk"             # 可执行文件路径
 APP_VERSION="0.0.1"
 IDENTIFIER="cn.crossdesk.app"
-ICON_PATH="../icons/app_icon.icns"         # .icns 图标路径
+ICON_PATH="../icons/crossedesk.icns"         # .icns 图标路径
 MACOS_MIN_VERSION="10.12"
 
 CERTS_SOURCE="../certs"                     # 你的证书文件目录，里面放所有需要安装的文件
@@ -37,8 +37,8 @@ chmod +x "${MACOS_DIR}/${APP_NAME}"
 
 # === 图标 ===
 if [ -f "${ICON_PATH}" ]; then
-    cp "${ICON_PATH}" "${RESOURCES_DIR}/app_icon.icns"
-    ICON_KEY="<key>CFBundleIconFile</key><string>app_icon.icns</string>"
+    cp "${ICON_PATH}" "${RESOURCES_DIR}/crossedesk.icns"
+    ICON_KEY="<key>CFBundleIconFile</key><string>crossedesk.icns</string>"
     echo "🎨 图标添加完成"
 else
     ICON_KEY=""

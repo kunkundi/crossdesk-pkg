@@ -25,6 +25,13 @@ rm -rf app_icon.iconset
 use script to build and package installer
 ```
 # copy executable to ./exec
-# into ./macos
+# into ./macosx
 run pkg.sh
+```
+
+# Linux
+```
+# copy executable to ./exec
+# into ./linux
+run build_deb.sh
 ```

@@ -17,8 +17,8 @@ CONTENTS_DIR="${APP_BUNDLE}/Contents"
 MACOS_DIR="${CONTENTS_DIR}/MacOS"
 RESOURCES_DIR="${CONTENTS_DIR}/Resources"
 
-PKG_NAME="${APP_NAME}.pkg"
-DMG_NAME="${APP_NAME}.dmg"
+PKG_NAME="${APP_NAME}-${APP_VERSION}.pkg"
+DMG_NAME="${APP_NAME}-${APP_VERSION}.dmg"
 VOL_NAME="Install ${APP_NAME}"
 
 # === 清理旧文件 ===
@@ -141,7 +141,7 @@ hdiutil create -volname "${VOL_NAME}" \
   -srcfolder CrossDesk_dmg_temp \
   -ov -format UDZO "${DMG_NAME}"
 
-rm -rf CrossDesk_dmg_temp build_pkg_temp ${APP_BUNDLE}
+rm -rf CrossDesk_dmg_temp build_pkg_temp scripts ${APP_BUNDLE}
 
 echo "🎉 所有打包完成："
 echo "   ✔️ 应用：${APP_BUNDLE}"

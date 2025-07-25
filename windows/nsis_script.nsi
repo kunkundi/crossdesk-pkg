@@ -9,8 +9,8 @@
 !define UNINSTALL_REG_KEY "CrossDesk"
 
 ;★安装包图标
-Icon "E:\SourceCode\crossdesk\icon\crossedesk.ico"
-!define MUI_ICON "E:\SourceCode\crossdesk\icon\crossedesk.ico"
+Icon "E:\SourceCode\crossdesk-pkg\icons\crossdesk.ico"
+!define MUI_ICON "E:\SourceCode\crossdesk-pkg\icons\crossdesk.ico"
 
 ;★压缩设置
 SetCompressor /FINAL lzma
@@ -30,7 +30,7 @@ RequestExecutionLevel admin
 ; ------ MUI 定义结束 ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "crossdesk_installer.exe"
+OutFile "CrossDesk-${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\CrossDesk"
 ShowInstDetails show
 
@@ -39,10 +39,10 @@ Section "MainSection"
     SetOverwrite ifnewer
 
     ;★程序主文件
-    File /oname=crossdesk.exe "E:\SourceCode\crossdesk\build\windows\x64\release\crossdesk.exe"
+    File /oname=crossdesk.exe "E:\SourceCode\crossdesk-pkg\exec\crossdesk.exe"
 	
 	; ? 复制图标文件到安装目录
-    File "E:\SourceCode\crossdesk\icon\crossedesk.ico"
+    File "E:\SourceCode\crossdesk-pkg\icons\crossdesk.ico"
 
     ;★写入卸载信息
     WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -52,22 +52,22 @@ Section "MainSection"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayIcon" "$INSTDIR\crossedesk.ico"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "DisplayIcon" "$INSTDIR\crossdesk.ico"
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "NoModify" 1
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${UNINSTALL_REG_KEY}" "NoRepair" 1
 SectionEnd
 
 Section "Cert"
     SetOutPath "$APPDATA\CrossDesk\certs"
-    File /r "certs/crossdesk.cn_root.crt"
+    File /r "E:\SourceCode\crossdesk-pkg\certs\crossdesk.cn_root.crt"
 SectionEnd
 
 Section -AdditionalIcons
     ;★桌面快捷方式
-    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossedesk.ico"
+    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossdesk.ico"
 
     ;★开始菜单快捷方式
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossedesk.ico"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}.lnk" "$INSTDIR\crossdesk.exe" "" "$INSTDIR\crossdesk.ico"
 
     ;★网页快捷方式（桌面）
     WriteIniStr "$DESKTOP\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"

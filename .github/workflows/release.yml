@@ -28,9 +28,10 @@ jobs:
 
           mkdir -p release/latest
 
-          cp release/crossdesk-windows-x64-v${VERSION_NUM}.exe release/latest/crossdesk-windows-x64-latest.exe
-          cp release/crossdesk-macos-x64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-x64-latest.pkg
-          cp release/crossdesk-linux-x64-v${VERSION_NUM}.deb   release/latest/crossdesk-linux-x64-latest.deb
+          cp release/crossdesk-windows-x86_64-v${VERSION_NUM}.exe release/latest/crossdesk-windows-x86_64-latest.exe
+          cp release/crossdesk-macos-x86_64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-x86_64-latest.pkg
+          cp release/crossdesk-macos-aarch64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-aarch64-latest.pkg
+          cp release/crossdesk-linux-x86_64-v${VERSION_NUM}.deb   release/latest/crossdesk-linux-x86_64-latest.deb
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -38,9 +39,11 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            release/crossdesk-windows-x64-v*.exe
-            release/crossdesk-macos-x64-v*.pkg
-            release/crossdesk-linux-x64-v*.deb
-            release/latest/crossdesk-windows-x64-latest.exe
-            release/latest/crossdesk-macos-x64-latest.pkg
-            release/latest/crossdesk-linux-x64-latest.deb
+            release/crossdesk-windows-x86_64-v*.exe
+            release/crossdesk-macos-x86_64-v*.pkg
+            release/crossdesk-macos-aarch64-v*.pkg
+            release/crossdesk-linux-x86_64-v*.deb
+            release/latest/crossdesk-windows-x86_64-latest.exe
+            release/latest/crossdesk-macos-x86_64-latest.pkg
+            release/latest/crossdesk-macos-aarch64-latest.pkg
+            release/latest/crossdesk-linux-x86_64-latest.deb

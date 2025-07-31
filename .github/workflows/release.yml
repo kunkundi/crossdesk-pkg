@@ -4,8 +4,12 @@ on:
   push:
     tags:
       - "v*"
+
 permissions:
   contents: write
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   upload:
@@ -15,11 +19,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Prepare latest-named copies
+        run: |
+          VERSION="${GITHUB_REF##*/}"
+          VERSION_NUM="${VERSION#v}"
+
+          echo "Detected version: $VERSION_NUM"
+
+          mkdir -p release/latest
+
+          cp release/crossdesk-windows-x64-v${VERSION_NUM}.exe release/latest/crossdesk-windows-x64-latest.exe
+          cp release/crossdesk-macos-x64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-x64-latest.pkg
+          cp release/crossdesk-linux-x64-v${VERSION_NUM}.deb   release/latest/crossdesk-linux-x64-latest.deb
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          draft: false
+          prerelease: false
           files: |
             release/crossdesk-windows-x64-v*.exe
             release/crossdesk-macos-x64-v*.pkg
             release/crossdesk-linux-x64-v*.deb
-          token: ${{ secrets.GITHUB_TOKEN }}
+            release/latest/crossdesk-windows-x64-latest.exe
+            release/latest/crossdesk-macos-x64-latest.pkg
+            release/latest/crossdesk-linux-x64-latest.deb

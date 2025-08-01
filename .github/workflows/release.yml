@@ -1,4 +1,4 @@
-name: Upload Prebuilt Artifacts to Release
+name: Upload Artifacts to Versioned and Latest Releases
 
 on:
   push:
@@ -12,37 +12,75 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  upload:
+  upload-versioned:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Prepare latest-named copies
+      - name: Extract version number
+        id: version
         run: |
           VERSION="${GITHUB_REF##*/}"
           VERSION_NUM="${VERSION#v}"
+          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_OUTPUT
 
-          echo "Detected version: $VERSION_NUM"
-
-          mkdir -p release/latest
-
-          cp release/crossdesk-windows-x86_64-v${VERSION_NUM}.exe release/latest/crossdesk-windows-x86_64-latest.exe
-          cp release/crossdesk-macos-x86_64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-x86_64-latest.pkg
-          cp release/crossdesk-macos-aarch64-v${VERSION_NUM}.pkg   release/latest/crossdesk-macos-aarch64-latest.pkg
-          cp release/crossdesk-linux-x86_64-v${VERSION_NUM}.deb   release/latest/crossdesk-linux-x86_64-latest.deb
-
-      - name: Upload to GitHub Release
+      - name: Upload to Versioned GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.version.outputs.VERSION_NUM }}
+          name: Release v${{ steps.version.outputs.VERSION_NUM }}
           draft: false
           prerelease: false
           files: |
-            release/crossdesk-windows-x86_64-v*.exe
-            release/crossdesk-macos-x86_64-v*.pkg
-            release/crossdesk-macos-aarch64-v*.pkg
-            release/crossdesk-linux-x86_64-v*.deb
+            release/crossdesk-windows-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.exe
+            release/crossdesk-macos-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.pkg
+            release/crossdesk-macos-aarch64-v${{ steps.version.outputs.VERSION_NUM }}.pkg
+            release/crossdesk-linux-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.deb
+
+  upload-latest:
+    runs-on: ubuntu-latest
+    needs: upload-versioned
+
+    steps:
+      - name: Checkout repository with full history (for tag creation)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version number
+        id: version
+        run: |
+          VERSION="${GITHUB_REF##*/}"
+          VERSION_NUM="${VERSION#v}"
+          echo "VERSION_NUM=${VERSION_NUM}" >> $GITHUB_OUTPUT
+
+      - name: Create latest-named files
+        run: |
+          mkdir -p release/latest
+
+          cp release/crossdesk-windows-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.exe   release/latest/crossdesk-windows-x86_64-latest.exe
+          cp release/crossdesk-macos-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.pkg     release/latest/crossdesk-macos-x86_64-latest.pkg
+          cp release/crossdesk-macos-aarch64-v${{ steps.version.outputs.VERSION_NUM }}.pkg    release/latest/crossdesk-macos-aarch64-latest.pkg
+          cp release/crossdesk-linux-x86_64-v${{ steps.version.outputs.VERSION_NUM }}.deb     release/latest/crossdesk-linux-x86_64-latest.deb
+
+      - name: Create or move 'latest' tag to current commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag -f latest
+          git push origin latest --force
+
+      - name: Upload to 'latest' GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Release
+          draft: false
+          prerelease: false
+          files: |
             release/latest/crossdesk-windows-x86_64-latest.exe
             release/latest/crossdesk-macos-x86_64-latest.pkg
             release/latest/crossdesk-macos-aarch64-latest.pkg
